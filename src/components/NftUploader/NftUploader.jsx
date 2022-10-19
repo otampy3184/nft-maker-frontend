@@ -8,6 +8,9 @@ import Web3Mint from "../../utils/Web3Mint.json";
 import { Web3Storage } from 'web3.storage'
 
 const NftUploader = () => {
+
+  const CONTRACT_ADDRESS = "0x4E5E5bcA3F2d75286395a88752B22F0bBC054A88";
+
   // Store of user's wallet account
   const [ currentAccount, setCurrentAccount ] = useState("");
 
@@ -32,6 +35,8 @@ const NftUploader = () => {
       const account = accounts[0];
       console.log("Found an authorized account:", account);
       setCurrentAccount(account);
+
+      setupEventListener();
     }else {
       console.log("No authorized account are founded");
     }
@@ -54,8 +59,35 @@ const NftUploader = () => {
     }
   }
 
+  const setupEventListener = async () => {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        // NFT が発行されます。
+        const connectedContract = new ethers.Contract(
+          CONTRACT_ADDRESS,
+          Web3Mint.abi,
+          signer
+        );
+        // Event が　emit される際に、コントラクトから送信される情報を受け取っています。
+        connectedContract.on("NewEpicNFTMinted", (from, tokenId) => {
+          console.log(from, tokenId.toNumber());
+          alert(
+            `あなたのウォレットに NFT を送信しました。OpenSea に表示されるまで最大で10分かかることがあります。NFT へのリンクはこちらです: https://testnets.opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`
+          );
+        });
+        console.log("Setup event listener!");
+      } else {
+        console.log("Ethereum object doesn't exist!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const askContractToMintNFT = async(ipfs) => {
-    const CONTRACT_ADDRESS = "0xD6DEf2805C4D6f36C6129ea55A3Cbde0B82a0d0e";
     try {
       const { ethereum } = window;
       if (ethereum) {
