@@ -78,7 +78,7 @@ const NftUploader = () => {
         connectedContract.on("NewEpicNFTMinted", (from, tokenId) => {
           console.log(from, tokenId.toNumber());
           alert(
-            `あなたのウォレットに NFT を送信しました。OpenSea に表示されるまで最大で10分かかることがあります。NFT へのリンクはこちらです: https://testnets.opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`
+            `Openseaへのリンク:https://testnets.opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`
           );
         });
         console.log("Setup event listener!");
@@ -141,6 +141,10 @@ const NftUploader = () => {
       name: 'experiment',
       maxRetries: 3
     })
+
+    // Fetchして使う方法があり
+    // const response = await fetch(`https://w3s.link/ipfs/${rootCid}`);
+    // console.log(response.url)
     const res = await client.get(rootCid) // Web3Response
     const files = await res.files() // Web3File[]
     for (const file of files) {
