@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import ImageLogo from "./image.svg";
 import "./NftUploader.css";
 import { Web3Storage } from 'web3.storage'
+import  Loading from "../Loading";
 
 const NftUploader = () => {
   const CONTRACT_ADDRESS =
@@ -14,6 +15,7 @@ const NftUploader = () => {
    * ユーザーのウォレットアドレスを格納するために使用する状態変数を定義
    */
   const [currentAccount, setCurrentAccount] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   /*この段階でcurrentAccountの中身は空*/
   console.log("currentAccount: ", currentAccount);
   const checkIfWalletIsConnected = async () => {
@@ -109,6 +111,7 @@ const NftUploader = () => {
         console.log(
           `Mined, see transaction: https://goerli.etherscan.io/tx/${nftTxn.hash}`
         );
+        setIsLoading(false);
       } else {
         console.log("Ethereum object doesn't exist!");
       }
@@ -133,6 +136,7 @@ const NftUploader = () => {
   const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDEyZUM3OTFBREM0NGYyMmI0ODlmNEYxQTk1ODk2ODM2M0RGRUVGNzAiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NjUyMzU4NjIzMTgsIm5hbWUiOiJuZnQtbWFrZXIifQ.ozxz5s4zkcGENyU9kr_pLRK1p4LBgqgGAULJRqcwxcQ";
 
   const imageToNFT = async (e) => {
+    setIsLoading(true);
     const client = new Web3Storage({ token: API_KEY })
     const image = e.target
     console.log(image)
@@ -155,6 +159,9 @@ const NftUploader = () => {
 
   return (
     <div className="outerBox">
+      <div className='loading'>
+        {isLoading && <Loading />}
+      </div>
       {currentAccount === "" ? (
         renderNotConnectedContainer()
       ) : (
