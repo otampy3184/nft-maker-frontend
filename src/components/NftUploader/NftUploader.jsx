@@ -10,7 +10,7 @@ import  Loading from "../Loading";
 
 const NftUploader = () => {
   const CONTRACT_ADDRESS =
-    "0x7c2e339aEC5f9AFe134fddeC5bD2C95330c1a675";
+    "0x89327F9568e2b3EcCc6070e7C1971C35e0173bf1";
   /*
    * ユーザーのウォレットアドレスを格納するために使用する状態変数を定義
    */
@@ -80,7 +80,7 @@ const NftUploader = () => {
         connectedContract.on("NewEpicNFTMinted", (from, tokenId) => {
           console.log(from, tokenId.toNumber());
           alert(
-            `Openseaへのリンク:https://testnets.opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`
+            `Openseaへのリンク : https://testnets.opensea.io/assets/mumbai/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`
           );
         });
         console.log("Setup event listener!");
@@ -109,7 +109,7 @@ const NftUploader = () => {
         console.log("Mining...please wait.");
         await nftTxn.wait();
         console.log(
-          `Mined, see transaction: https://goerli.etherscan.io/tx/${nftTxn.hash}`
+          `Mined, see transaction: https://mumbai.etherscan.io/tx/${nftTxn.hash}`
         );
         setIsLoading(false);
       } else {
