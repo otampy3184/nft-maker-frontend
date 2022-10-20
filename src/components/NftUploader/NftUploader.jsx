@@ -165,7 +165,7 @@ const NftUploader = () => {
       {currentAccount === "" ? (
         renderNotConnectedContainer()
       ) : (
-        <p>If you choose image, you can mint your NFT</p>
+        <p>Wallet Connected</p>
       )}
       <div className="title">
         <h2>NFTアップローダー</h2>
